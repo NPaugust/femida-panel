@@ -10,26 +10,22 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
+from dotenv import load_dotenv
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Загружаем переменные из .env, если файл есть (для локальной разработки)
+load_dotenv()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Получаем секретный ключ из переменных окружения (обязательно задать в .env или на сервере)
+SECRET_KEY = os.environ['SECRET_KEY']
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
+# Включаем/выключаем DEBUG через переменную окружения (по умолчанию False)
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', '783c9wqt%v1u5s!0%&q-3zeihq6m3b$-eb_^$rry)qka01bnxc')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['avgustin.pythonanywhere.com', '127.0.0.1', 'localhost']
-
-
-# Application definition
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -78,62 +74,33 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'femida.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
+# База данных — все параметры из переменных окружения
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'femida_prod',
-        'USER': 'femida-admin',
-        'PASSWORD': 'femida',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.environ['DB_NAME'],
+        'USER': os.environ['DB_USER'],
+        'PASSWORD': os.environ['DB_PASSWORD'],
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]  # если есть папка static с кастомными файлами
+STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -177,22 +144,13 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-CORS_ALLOWED_ORIGINS = [
-    "http://femida.kg",
-    "https://femida.kg",
-    "http://localhost:3000",
-    "https://localhost:3000",
-    "http://127.0.0.1:3000",
-    "https://127.0.0.1:3000",
-    "https://femida-two.vercel.app",
-    "https://femida-admin.vercel.app",
-]
+import json
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
+CORS_ALLOWED_ORIGINS = [origin for origin in CORS_ALLOWED_ORIGINS if origin]
 
-# Дополнительные CORS настройки для продакшена
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = False
 
-# Разрешенные заголовки
 CORS_ALLOWED_HEADERS = [
     'accept',
     'accept-encoding',
@@ -205,7 +163,6 @@ CORS_ALLOWED_HEADERS = [
     'x-requested-with',
 ]
 
-# Разрешенные методы
 CORS_ALLOWED_METHODS = [
     'DELETE',
     'GET',
@@ -215,7 +172,6 @@ CORS_ALLOWED_METHODS = [
     'PUT',
 ]
 
-# Настройки логирования
 if DEBUG:
     LOGGING = {
         'version': 1,
@@ -258,7 +214,6 @@ if DEBUG:
         },
     }
 else:
-    # В продакшене отключаем логирование в файл
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': True,

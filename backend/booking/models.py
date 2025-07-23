@@ -31,9 +31,18 @@ class Building(models.Model):
     name = models.CharField(max_length=100, verbose_name="Название корпуса")
     address = models.CharField(max_length=255, verbose_name="Адрес")
     description = models.TextField(blank=True, verbose_name="Описание")
+    is_deleted = models.BooleanField(default=False, verbose_name="Удалён")
 
     def __str__(self):
         return self.name
+
+    def soft_delete(self):
+        self.is_deleted = True
+        self.save()
+    
+    def restore(self):
+        self.is_deleted = False
+        self.save()
 
 class Room(models.Model):
     building = models.ForeignKey(Building, on_delete=models.CASCADE, related_name="rooms", verbose_name="Корпус")

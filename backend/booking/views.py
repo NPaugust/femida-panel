@@ -108,6 +108,16 @@ class BuildingViewSet(viewsets.ModelViewSet):
     serializer_class = BuildingSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.soft_delete()
+        return Response({'success': True})
+    @action(detail=True, methods=['post'])
+    def restore(self, request, pk=None):
+        instance = self.get_object()
+        instance.restore()
+        return Response({'success': True})
+
 class RoomViewSet(viewsets.ModelViewSet):
     queryset = Room.objects.filter(is_deleted=False)
     serializer_class = RoomSerializer
@@ -321,6 +331,10 @@ class TrashViewSet(APIView):
             data = Booking.objects.filter(is_deleted=True)
             serializer = BookingSerializer(data, many=True)
             return Response(serializer.data)
+        elif obj_type == 'buildings':
+            data = Building.objects.filter(is_deleted=True)
+            serializer = BuildingSerializer(data, many=True)
+            return Response(serializer.data)
         return Response({'error': 'Invalid type'}, status=400)
 
     def post(self, request, action, obj_type, obj_id):
@@ -328,6 +342,7 @@ class TrashViewSet(APIView):
             'guests': Guest,
             'rooms': Room,
             'bookings': Booking,
+            'buildings': Building,
         }
         model = model_map.get(obj_type)
         if not model:

@@ -36,6 +36,7 @@ class BuildingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Building
         fields = '__all__'
+        read_only_fields = ['is_deleted']
 
 class RoomSerializer(serializers.ModelSerializer):
     building = serializers.SerializerMethodField()

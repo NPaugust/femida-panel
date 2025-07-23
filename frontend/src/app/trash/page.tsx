@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
-import { FaTrash, FaUndo, FaTrashAlt, FaEye, FaFilter, FaSearch, FaBed, FaUser, FaCalendarCheck, FaExclamationTriangle } from "react-icons/fa";
+import { FaTrash, FaUndo, FaTrashAlt, FaEye, FaFilter, FaSearch, FaBed, FaUser, FaCalendarCheck, FaExclamationTriangle, FaBuilding } from "react-icons/fa";
 import { API_URL, fetchWithAuth } from "../../shared/api";
 import ConfirmModal from "../../components/ConfirmModal";
 import HighlightedText from "../../components/HighlightedText";
@@ -12,7 +12,7 @@ import Breadcrumbs from '../../components/Breadcrumbs';
 
 interface TrashItem {
   id: number;
-  type: 'room' | 'guest' | 'booking';
+  type: 'room' | 'guest' | 'booking' | 'building';
   name: string;
   description: string;
   deleted_at: string;
@@ -102,7 +102,7 @@ export default function TrashPage() {
         return;
       }
       setLoading(true);
-      const types = ['rooms', 'guests', 'bookings'];
+      const types = ['rooms', 'guests', 'bookings', 'buildings'];
       let allTrash: TrashItem[] = [];
       for (const type of types) {
         const res = await fetchWithAuth(`${API_URL}/api/trash/${type}/`, { headers: { 'Authorization': `Bearer ${access}` } });
@@ -111,8 +111,8 @@ export default function TrashPage() {
         allTrash = allTrash.concat(data.map((item: any) => ({
           id: item.id,
           type: type.slice(0, -1),
-          name: item.number || item.full_name || `Бронирование #${item.id}`,
-          description: item.description || item.notes || item.comment || '',
+          name: item.number || item.full_name || item.name || `Здание #${item.id}`,
+          description: item.description || item.notes || item.comment || item.address || '',
           deleted_at: item.deleted_at || '',
           data: item,
         })));
@@ -225,6 +225,8 @@ export default function TrashPage() {
         return <FaUser className="text-green-600" />;
       case 'booking':
         return <FaCalendarCheck className="text-purple-600" />;
+      case 'building':
+        return <FaBuilding className="text-orange-600" />;
       default:
         return <FaTrash className="text-gray-600" />;
     }
@@ -238,6 +240,8 @@ export default function TrashPage() {
         return 'Гость';
       case 'booking':
         return 'Бронирование';
+      case 'building':
+        return 'Здание';
       default:
         return type;
     }
@@ -251,6 +255,8 @@ export default function TrashPage() {
         return 'bg-green-100 text-green-800';
       case 'booking':
         return 'bg-purple-100 text-purple-800';
+      case 'building':
+        return 'bg-orange-100 text-orange-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -268,8 +274,9 @@ export default function TrashPage() {
     const rooms = trashItems.filter(item => item.type === 'room').length;
     const guests = trashItems.filter(item => item.type === 'guest').length;
     const bookings = trashItems.filter(item => item.type === 'booking').length;
+    const buildings = trashItems.filter(item => item.type === 'building').length;
     
-    return { total, rooms, guests, bookings };
+    return { total, rooms, guests, bookings, buildings };
   };
 
   if (loading) {
@@ -400,6 +407,18 @@ export default function TrashPage() {
               <div>
                 <p className="text-sm text-purple-700 font-bold">Бронирований</p>
                 <p className="text-3xl font-bold text-purple-900">{stats.bookings}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl shadow-lg p-6 border border-orange-200 hover:shadow-xl transition-all duration-300 group">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                <FaBuilding className="text-white text-xl" />
+              </div>
+              <div>
+                <p className="text-sm text-orange-700 font-bold">Зданий</p>
+                <p className="text-3xl font-bold text-orange-900">{stats.buildings}</p>
               </div>
             </div>
           </div>
@@ -616,6 +635,7 @@ export default function TrashPage() {
             <option value="room">Номера</option>
             <option value="guest">Гости</option>
             <option value="booking">Бронирования</option>
+            <option value="building">Здания</option>
           </select>
 
           <label className="font-semibold">Дата удаления</label>

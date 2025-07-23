@@ -196,6 +196,7 @@ export default function BuildingsPage() {
       setBuildings(prev => prev.map(x => x.id === b.id ? b : x));
     } else {
       setBuildings(prev => [...prev, b]);
+      fetchRoomsForBuilding(b.id); // Загружаем номера для нового здания
     }
     setEditing(null);
   };
