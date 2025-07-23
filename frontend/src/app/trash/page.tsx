@@ -362,65 +362,41 @@ export default function TrashPage() {
 
       {/* Статистика */}
       <div className="px-6 py-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl shadow-lg p-6 border border-red-200 hover:shadow-xl transition-all duration-300 group">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-red-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                <FaTrash className="text-white text-xl" />
-              </div>
-              <div>
-                <p className="text-sm text-red-700 font-bold">Всего удалено</p>
-                <p className="text-3xl font-bold text-red-900">{stats.total}</p>
-              </div>
+        <div className="grid grid-cols-5 gap-2">
+          <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-lg shadow p-2 border border-red-200 flex flex-col items-center min-w-0 overflow-hidden">
+            <div className="w-7 h-7 bg-red-500 rounded flex items-center justify-center shadow mb-1">
+              <FaTrash className="text-white text-base" />
             </div>
+            <p className="text-[10px] text-red-700 font-bold">Всего удалено</p>
+            <p className="text-lg font-bold text-red-900">{stats.total}</p>
           </div>
-          
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl shadow-lg p-6 border border-blue-200 hover:shadow-xl transition-all duration-300 group">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                <FaBed className="text-white text-xl" />
-              </div>
-              <div>
-                <p className="text-sm text-blue-700 font-bold">Номеров</p>
-                <p className="text-3xl font-bold text-blue-900">{stats.rooms}</p>
-              </div>
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg shadow p-2 border border-blue-200 flex flex-col items-center min-w-0 overflow-hidden">
+            <div className="w-7 h-7 bg-blue-500 rounded flex items-center justify-center shadow mb-1">
+              <FaBed className="text-white text-base" />
             </div>
+            <p className="text-[10px] text-blue-700 font-bold">Номеров</p>
+            <p className="text-lg font-bold text-blue-900">{stats.rooms}</p>
           </div>
-          
-          <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl shadow-lg p-6 border border-green-200 hover:shadow-xl transition-all duration-300 group">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                <FaUser className="text-white text-xl" />
-              </div>
-              <div>
-                <p className="text-sm text-green-700 font-bold">Гостей</p>
-                <p className="text-3xl font-bold text-green-900">{stats.guests}</p>
-              </div>
+          <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg shadow p-2 border border-green-200 flex flex-col items-center min-w-0 overflow-hidden">
+            <div className="w-7 h-7 bg-green-500 rounded flex items-center justify-center shadow mb-1">
+              <FaUser className="text-white text-base" />
             </div>
+            <p className="text-[10px] text-green-700 font-bold">Гостей</p>
+            <p className="text-lg font-bold text-green-900">{stats.guests}</p>
           </div>
-          
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl shadow-lg p-6 border border-purple-200 hover:shadow-xl transition-all duration-300 group">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                <FaCalendarCheck className="text-white text-xl" />
-              </div>
-              <div>
-                <p className="text-sm text-purple-700 font-bold">Бронирований</p>
-                <p className="text-3xl font-bold text-purple-900">{stats.bookings}</p>
-              </div>
+          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg shadow p-2 border border-purple-200 flex flex-col items-center min-w-0 overflow-hidden">
+            <div className="w-7 h-7 bg-purple-500 rounded flex items-center justify-center shadow mb-1">
+              <FaCalendarCheck className="text-white text-base" />
             </div>
+            <p className="text-[10px] text-purple-700 font-bold">Бронирований</p>
+            <p className="text-lg font-bold text-purple-900">{stats.bookings}</p>
           </div>
-
-          <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl shadow-lg p-6 border border-orange-200 hover:shadow-xl transition-all duration-300 group">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                <FaBuilding className="text-white text-xl" />
-              </div>
-              <div>
-                <p className="text-sm text-orange-700 font-bold">Зданий</p>
-                <p className="text-3xl font-bold text-orange-900">{stats.buildings}</p>
-              </div>
+          <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg shadow p-2 border border-orange-200 flex flex-col items-center min-w-0 overflow-hidden">
+            <div className="w-7 h-7 bg-orange-500 rounded flex items-center justify-center shadow mb-1">
+              <FaBuilding className="text-white text-base" />
             </div>
+            <p className="text-[10px] text-orange-700 font-bold">Зданий</p>
+            <p className="text-lg font-bold text-orange-900">{stats.buildings}</p>
           </div>
         </div>
       </div>
