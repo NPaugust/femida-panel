@@ -1,0 +1,61 @@
+# dependencies
+node_modules/
+frontend/node_modules/
+
+# next.js
+.next/
+frontend/.next/
+out/
+frontend/out/
+
+*.pyc
+__pycache__/
+node_modules/
+backend/venv/
+backend/venv/
+# logs
+logs/
+*.log
+*.log.*
+backend/logs/
+backend/logs/*.log
+backend/logs/*.log.*
+
+# build
+build/
+frontend/build/
+backend/build/
+
+.venv
+.staticfiles
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# env files
+.env
+.env.*
+
+# vercel
+.vercel
+frontend/.vercel
+
+# typescript
+*.tsbuildinfo
+frontend/next-env.d.ts
+
+# coverage
+coverage/
+frontend/coverage/
+backend/coverage/
+
+backend/venv/
+backend/staticfiles/
+backend/db.sqlite3
