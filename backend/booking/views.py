@@ -284,6 +284,10 @@ class BookingViewSet(viewsets.ModelViewSet):
     serializer_class = BookingSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_serializer_context(self):
+        """Контекст сериализатора без дополнительных флагов"""
+        return super().get_serializer_context()
+
     def perform_create(self, serializer):
         booking = serializer.save(created_by=self.request.user)
         logger.info(f"Создано новое бронирование: {booking.guest.full_name} в {booking.room}")

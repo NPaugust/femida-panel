@@ -191,7 +191,10 @@ function BookingModal({ open, onClose, onSave, guests, rooms, initial }: Booking
   const isPastDate = (dateStr: string, time: string) => {
     if (!dateStr) return false;
     const date = new Date(`${dateStr}T${time}`);
-    return date < new Date();
+    const now = new Date();
+    // запрещаем прошлое и текущий момент
+    const isPastOrToday = date <= now;
+    return isPastOrToday;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -216,6 +219,7 @@ function BookingModal({ open, onClose, onSave, guests, rooms, initial }: Booking
       const check_out = form.check_out && checkOutTime
         ? new Date(toZonedTime(`${form.check_out}T${checkOutTime}`, TIMEZONE)).toISOString()
         : '';
+      
       let res;
       if (initial && initial.id) {
         res = await fetchWithAuth(`${API_URL}/api/bookings/${initial.id}/`, {
@@ -503,10 +507,9 @@ function BookingModal({ open, onClose, onSave, guests, rooms, initial }: Booking
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
           <div className="bg-white rounded-xl shadow-xl p-8 max-w-sm w-full">
             <div className="text-lg font-bold mb-4 text-yellow-700">Дата заезда в прошлом</div>
-            <div className="mb-6 text-gray-700">Вы выбрали дату заезда в прошлом. Всё равно сохранить?</div>
+            <div className="mb-6 text-gray-700">Вы выбрали дату заезда в прошлом или сегодня. Измените дату заезда на будущую.</div>
             <div className="flex justify-end gap-3">
-              <button className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300" onClick={() => setShowPastDateConfirm(false)}>Отмена</button>
-              <button className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700" onClick={() => { setShowPastDateConfirm(false); doSubmit(); }}>Да, сохранить</button>
+              <button className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300" onClick={() => setShowPastDateConfirm(false)}>Ок</button>
             </div>
           </div>
         </div>

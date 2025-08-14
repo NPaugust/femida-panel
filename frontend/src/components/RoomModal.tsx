@@ -32,6 +32,7 @@ export interface RoomModalProps {
   onSave: (room: Room) => void;
   initial?: Room | null;
   buildings: Building[];
+  existingRooms?: Room[];
 }
 
 const ROOM_CLASSES = [
@@ -46,7 +47,7 @@ const ROOM_STATUSES = [
   { value: 'repair', label: 'Недоступен' },
 ];
 
-const RoomModal = ({ open, onClose, onSave, initial, buildings }: RoomModalProps) => {
+const RoomModal = ({ open, onClose, onSave, initial, buildings, existingRooms = [] }: RoomModalProps) => {
   const [form, setForm] = useState({
     number: initial?.number || '',
     room_class: initial?.room_class || 'standard',
@@ -125,6 +126,19 @@ const RoomModal = ({ open, onClose, onSave, initial, buildings }: RoomModalProps
     if (form.price_per_night < 0) {
       newErrors.price_per_night = 'Цена не может быть отрицательной';
     }
+    
+    // Проверка на дубликаты номера комнаты
+    if (form.number && existingRooms.length > 0) {
+      const duplicateNumber = existingRooms.find(r => 
+        r.id !== initial?.id && 
+        r.number.toLowerCase().trim() === form.number.toLowerCase().trim() &&
+        r.building.id === Number(form.building)
+      );
+      if (duplicateNumber) {
+        newErrors.number = 'Номер с таким названием уже существует в этом здании';
+      }
+    }
+    
     return newErrors;
   };
 

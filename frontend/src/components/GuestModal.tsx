@@ -35,9 +35,10 @@ export interface GuestModalProps {
   onClose: () => void;
   onSave: (guest: Guest) => void;
   initial?: Guest | null;
+  existingGuests?: Guest[];
 }
 
-const GuestModal = ({ open, onClose, onSave, initial }: GuestModalProps) => {
+const GuestModal = ({ open, onClose, onSave, initial, existingGuests = [] }: GuestModalProps) => {
   const [form, setForm] = useState({
     full_name: initial?.full_name || '',
     inn: initial?.inn || '',
@@ -98,6 +99,28 @@ const GuestModal = ({ open, onClose, onSave, initial }: GuestModalProps) => {
     if (!form.phone || !/^\+\d{7,16}$/.test(form.phone.replace(/\s/g, ''))) {
       newErrors.phone = 'Введите корректный номер телефона';
     }
+    
+    // Проверка на дубликаты
+    if (form.full_name && existingGuests.length > 0) {
+      const duplicateName = existingGuests.find(g => 
+        g.id !== initial?.id && 
+        g.full_name.toLowerCase().trim() === form.full_name.toLowerCase().trim()
+      );
+      if (duplicateName) {
+        newErrors.full_name = 'Гость с таким ФИО уже существует';
+      }
+    }
+    
+    if (form.inn && existingGuests.length > 0) {
+      const duplicateInn = existingGuests.find(g => 
+        g.id !== initial?.id && 
+        g.inn === form.inn
+      );
+      if (duplicateInn) {
+        newErrors.inn = 'Гость с таким ИНН уже существует';
+      }
+    }
+    
     return newErrors;
   };
 

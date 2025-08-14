@@ -324,7 +324,7 @@ export default function RoomsPage() {
   
   // Пагинация
   const [currentPage, setCurrentPage] = useState(1);
-  const roomsPerPage = 8; // 8 номеров на страницу
+  const roomsPerPage = 7; // 7 номеров на страницу для раздела Номера
 
   useEffect(() => {
     fetchData();
@@ -654,7 +654,6 @@ export default function RoomsPage() {
               <div>
                 <p className="text-sm text-purple-700 font-bold">Всего зданий</p>
                 <p className="text-3xl font-bold text-purple-900">{buildings.length}</p>
-                <p className="text-xs text-purple-700 mt-1">{buildings.map(b => b.name).join(', ')}</p>
               </div>
             </div>
           </div>

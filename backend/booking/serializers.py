@@ -200,6 +200,9 @@ class BookingSerializer(serializers.ModelSerializer):
         people_count = data.get('people_count')
         room = data.get('room')
         
+        # Логируем для отладки
+        logger.info(f"Booking validation - check_in: {check_in}")
+        
         # Валидация дат
         if check_in and check_out:
             if check_in >= check_out:
@@ -207,11 +210,13 @@ class BookingSerializer(serializers.ModelSerializer):
                     "Дата выезда должна быть позже даты заезда"
                 )
             
-            # Проверяем, что дата заезда не в прошлом
+            # Запрещаем прошлые и текущие даты заезда
             from django.utils import timezone
-            if check_in < timezone.now():
+            current_time = timezone.now()
+            # Считаем, что "сегодня" тоже запрещено (требуется будущее время)
+            if check_in <= current_time:
                 raise serializers.ValidationError(
-                    "Дата заезда не может быть в прошлом"
+                    "Дата заезда не может быть в прошлом или сегодня"
                 )
         
         # Валидация количества гостей

@@ -14,6 +14,7 @@ const PATH_LABELS: Record<string, string> = {
   'trash': 'Корзина',
   'users': 'Сотрудники',
   'docs': 'Документация',
+  'instructions': 'Инструкция',
 };
 
 export default function Breadcrumbs() {

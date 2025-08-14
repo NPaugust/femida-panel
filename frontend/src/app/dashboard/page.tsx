@@ -713,11 +713,18 @@ export default function DashboardPage() {
     <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <div className="w-full px-2 md:px-6 xl:px-16 py-0 flex flex-col gap-1">
         <Breadcrumbs />
-        <div className="flex items-center gap-4 bg-gradient-to-r from-white/90 to-blue-50/90 rounded-2xl shadow-lg p-6 mb-2 mt-6 border border-blue-100/50">
+        <div className="flex items-center justify-between bg-gradient-to-r from-white/90 to-blue-50/90 rounded-2xl shadow-lg p-6 mb-2 mt-6 border border-blue-100/50">
           <div className="flex flex-col">
             <span className="text-xl font-bold text-gray-900 mb-1">Добро пожаловать в админ-панель!</span>
             <span className="text-sm text-gray-600">{new Date().toLocaleDateString('ru-RU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
           </div>
+          <Link 
+            href="/instructions" 
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors shadow-md hover:shadow-lg"
+          >
+            <FaQuestionCircle className="text-sm" />
+            Инструкция по админ-панели
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6 mb-2">          <Link href="/rooms" className="bg-gradient-to-br from-blue-100 to-blue-300 rounded-2xl shadow-xl flex flex-col items-center justify-center p-5 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl group animate-fade-in hover:scale-105 cursor-pointer">
